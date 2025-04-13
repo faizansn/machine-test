@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { errorWrapper } = require("../../utils/errorWrapper");
-const { upload } = require("../../utils/upload");
+const checkAuth = require("../middleWare/checkAuth");
+const { checkPermission } = require("../middleWare/checkPermission");
 
 const {
   modifyCategoryById,
@@ -10,11 +11,12 @@ const {
   retrieveAllCategories,
   retrieveCategoryById,
 } = require("../controllers/category");
+const { createCategoryValidator, updateCategoryValidator } = require("../../validators/category");
 
-router.post("/", /**/ errorWrapper(insertCategory));
-router.get("/", /**/ errorWrapper(retrieveAllCategories));
-router.get("/:id", /**/ errorWrapper(retrieveCategoryById));
-router.put("/:id", /**/ errorWrapper(modifyCategoryById));
-router.delete("/:id", /**/ errorWrapper(removeCategory));
+router.post("/", checkAuth, checkPermission, createCategoryValidator, errorWrapper(insertCategory));
+router.get("/", checkAuth, checkPermission, errorWrapper(retrieveAllCategories));
+router.get("/:id", checkAuth, checkPermission, errorWrapper(retrieveCategoryById));
+router.put("/:id", checkAuth, checkPermission, updateCategoryValidator, errorWrapper(modifyCategoryById));
+router.delete("/:id", checkAuth, checkPermission, errorWrapper(removeCategory));
 
 module.exports = router;

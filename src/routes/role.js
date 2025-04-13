@@ -9,11 +9,13 @@ const {
   modifyRole,
   removeRole,
 } = require("../controllers/role");
+const { createRoleValidator, updateRoleValidator } = require("../../validators/role");
+const { checkPermission } = require("../middleWare/checkPermission");
 
-router.post("/", checkAuth, errorWrapper(insertRole));
-router.get("/", checkAuth, errorWrapper(retrieveRole));
-router.get("/:id", checkAuth, errorWrapper(retrieveRoleById));
-router.put("/:id", checkAuth, errorWrapper(modifyRole));
-router.delete("/:id", checkAuth, errorWrapper(removeRole));
+router.post("/", checkAuth, checkPermission, createRoleValidator, errorWrapper(insertRole));
+router.get("/", checkAuth, checkPermission, errorWrapper(retrieveRole));
+router.get("/:id", checkAuth, checkPermission, errorWrapper(retrieveRoleById));
+router.put("/:id", checkAuth, checkPermission, updateRoleValidator, errorWrapper(modifyRole));
+router.delete("/:id", checkAuth, checkPermission, errorWrapper(removeRole));
 
 module.exports = router;
