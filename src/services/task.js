@@ -57,7 +57,8 @@ exports.createTask = async (body) => {
   return handleSuccess("Task created Successfully");
 };
 
-exports.fetchAllTasks = async (query) => {
+exports.fetchAllTasks = async (query, userId, role) => {
+
   const pageNumber = parseInt(query.pageNumber) || 1;
   const limit = parseInt(query.limit) || 10;
   const skip = (pageNumber - 1) * limit;
@@ -68,6 +69,12 @@ exports.fetchAllTasks = async (query) => {
   const sortOrder = parseInt(query.sortOrder) || -1
   const status = query.status;
   const search = query.search || "";
+  let createdBy;
+
+  // user will see only his tasks and admin can see all of the tasks
+  if (!/admin/i.test(role)) {
+    createdBy = userId;
+  }
 
   const sortObject = {};
   sortObject[sortField] = sortOrder;
@@ -75,6 +82,10 @@ exports.fetchAllTasks = async (query) => {
   const conditions = {};
   if (assignedTo) {
     conditions["assignedTo"] = new ObjectId(assignedTo);
+  }
+
+  if (createdBy) {
+    conditions["createdBy"] = new ObjectId(createdBy);
   }
 
   if (project) {
@@ -102,6 +113,8 @@ exports.fetchAllTasks = async (query) => {
       },
     ],
   };
+
+  console.log(JSON.stringify(searchQuery))
 
   const _lookups = [
     {

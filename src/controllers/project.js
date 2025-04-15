@@ -7,7 +7,7 @@ exports.insertProject = async (req, res) => {
 };
 
 exports.retreiveProjects = async (req, res) => {
-  const result = await fetchAllProjects(req.query);
+  const result = await fetchAllProjects(req.query, req.user.id, req.user.role);
   return response.ok(res, result);
 };
 

@@ -5,7 +5,7 @@ dotenv.config();
 
 const connectToDatabase = async () => {
   mongoose
-    .connect(process.env.MONGO_URL, {
+    .connect("mongodb+srv://sahil:Admin%40123@cluster0.izcms3r.mongodb.net/machine-test?retryWrites=true&w=majority&appName=Cluster0", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

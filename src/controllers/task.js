@@ -16,7 +16,7 @@ exports.insertTask = async (req, res) => {
 };
 
 exports.retrieveTasks = async (req, res) => {
-  const result = await fetchAllTasks(req.query);
+  const result = await fetchAllTasks(req.query, req.user.id, req.user.role);
   return response.ok(res, result);
 };
 

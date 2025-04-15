@@ -5,8 +5,11 @@ const log = (type, fn) => fn ? () => {
     console.log(`redis connection ${type}`);
 } : console.log(`redis connection ${type}`);
 
+const REDIS_PORT = "14480";
+const REDIS_HOST = "redis-14480.c246.us-east-1-4.ec2.redns.redis-cloud.com";
+
 // Option 1: One connection is enough per application
-const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, {
+const client = redis.createClient(REDIS_PORT, REDIS_HOST, {
     //auth_pass : redisConn.PASSWORD,
     retry_strategy: (options) => {
         const { error, total_retry_time, attempt } = options;

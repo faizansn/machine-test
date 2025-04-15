@@ -25,7 +25,7 @@ exports.createProject = async (userId, body) => {
   return handleSuccess("Project created Successfully");
 };
 
-exports.fetchAllProjects = async (query) => {
+exports.fetchAllProjects = async (query, userId, role) => {
   const pageNumber = parseInt(query.pageNumber) || 1;
   const limit = parseInt(query.limit) || 10;
   const skip = (pageNumber - 1) * limit;
@@ -33,13 +33,20 @@ exports.fetchAllProjects = async (query) => {
   const search = query.search || "";
   const sortField = query.sortField || "udpatedAt";
   const sortOrder = parseInt(query.sortOrder) || -1;
-
   const sortObject = {};
+  let members;
   sortObject[sortField] = sortOrder;
+
+  if (!/admin/i.test(role)) {
+    members = { $in: [userId]}
+  }
 
   const conditions = {};
   if (assignedTo) {
     conditions["assignedTo"] = new ObjectId(assignedTo);
+  }
+  if (members) {
+    conditions["members"] = members;
   }
 
   const searchQuery = {

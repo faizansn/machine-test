@@ -26,8 +26,10 @@ module.exports = async (req, res, next) => {
       const decode = jwt.verify(token, JWT_SECRET || process.env.JWT_SECRET);
       if (decode) {
 
-        // Check for the token in the DB
-        const cachedToken = redisClient.connected && await GET_ASYNC(`userToken_${token}`)
+        let cachedUser = false;
+        let cachedToken = false;
+       // Check for the token in the DB
+        // const cachedToken = redisClient.connected && await GET_ASYNC(`userToken_${token}`)
           let findInDb;
           if (cachedToken) {
             findInDb = JSON.parse(cachedToken);
@@ -38,22 +40,22 @@ module.exports = async (req, res, next) => {
             }
 
             // Cache the token data in Redis
-            redisClient.connected && await SET_ASYNC(`userToken_${token}`, JSON.stringify(findInDb), 'EX', 60);
+            // redisClient.connected && await SET_ASYNC(`userToken_${token}`, JSON.stringify(findInDb), 'EX', 60);
           }
       
         // Get user details
-        const cachedUser = redisClient.connected && await GET_ASYNC(`user_${decode.userId}`)
+        // const cachedUser = redisClient.connected && await GET_ASYNC(`user_${decode.userId}`)
           let userDetails;
           if (cachedUser) {
             userDetails = JSON.parse(cachedUser);
           } else {
-            userDetails = await db.user.findOne({ _id: decode.userId });
+            userDetails = await db.user.findById(decode.userId).populate("role");
             if (!userDetails) {
               return response.unauthorized(res);
             }
 
             // Cache the user details in Redis
-            redisClient.connected && SET_ASYNC(`user_${decode.userId}`, JSON.stringify(userDetails), 'EX', 60);
+            // redisClient.connected && SET_ASYNC(`user_${decode.userId}`, JSON.stringify(userDetails), 'EX', 60);
           }
 
           if (userDetails) {
@@ -61,6 +63,7 @@ module.exports = async (req, res, next) => {
               id: userDetails._id,
               firstName: userDetails.firstName,
               email: userDetails.email,
+              role: userDetails.role?.name
             };
             next();
           }
