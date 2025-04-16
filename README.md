@@ -59,55 +59,51 @@ Each user is assigned a role:
 ## 📌 Complete API List
 
 ### Auth
-POST /api/auth/register – Register user  
 POST /api/auth/login – User login  
 POST /api/auth/logout – User logout
+POST /api/password-reset-email - Password Reset
 
 ### Users
-GET /api/users  
-POST /api/users  
-GET /api/users/:id  
-PUT /api/users/:id  
-DELETE /api/users/:id
+GET /api/user 
+POST /api/user  
+GET /api/user/:id  
+PUT /api/user/:id  
+DELETE /api/user/:id
 
 ### Teams
-GET /api/teams  
-POST /api/teams  
-PUT /api/teams/:id  
-DELETE /api/teams/:id
+GET /api/team 
+POST /api/team  
+PUT /api/team/:id  
+DELETE /api/team/:id
 
 ### Projects
-GET /api/projects  
-POST /api/projects  
-PUT /api/projects/:id  
-DELETE /api/projects/:id
-GET /api/projects/progress
+GET /api/project  
+POST /api/project  
+PUT /api/project/:id  
+DELETE /api/project/:id
+GET /api/project/progress
 
 ### Tasks
-GET /api/tasks  
-POST /api/tasks  
-GET /api/tasks/:id  
-PUT /api/tasks/:id  
-DELETE /api/tasks/:id
-PUT /api/tasks/:id/start
-GET /api/tasks/report
-POST /api/tasks/:id/complete
-
-### Comments
-POST /api/tasks/:taskId/comments  
-GET /api/tasks/:taskId/comments
+GET /api/task
+POST /api/task  
+GET /api/task/:id  
+PUT /api/task/:id  
+DELETE /api/task/:id
+PUT /api/task/:id/start
+GET /api/task/report
+POST /api/task/:id/complete
 
 ### Notifications
-GET /api/notifications  
-POST /api/notifications  
-PUT /api/notifications/:id  
-DELETE /api/notifications/:id
+GET /api/notification  
+POST /api/notification  
+PUT /api/notification/:id  
+DELETE /api/notification/:id
 
 ### Categories
-GET /api/categories  
-POST /api/categories  
-PUT /api/categories/:id  
-DELETE /api/categories/:id
+GET /api/category
+POST /api/category  
+PUT /api/category/:id  
+DELETE /api/category/:id
 
 ---
 
